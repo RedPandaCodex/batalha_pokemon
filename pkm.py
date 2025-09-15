@@ -1,5 +1,6 @@
 import random
-class pokemon():
+
+class Pokemon:
     def __init__(self, apelido, altura, peso, especie, tipagem, geracao, hp, ataque, defesa):
         self.__apelido = apelido
         self.__altura = altura
@@ -11,66 +12,77 @@ class pokemon():
         self.__ataque = ataque
         self.__defesa = defesa
 
+    # Getters (necessários para acessar os atributos privados)
+    @property
+    def apelido(self):
+        return self.__apelido
+
+    @property
+    def hp(self):
+        return self.__hp
+
+    @property
+    def ataque(self):
+        return self.__ataque
+
+    @property
+    def defesa(self):
+        return self.__defesa
+
+    @hp.setter
+    def hp(self, novo_hp):
+        self.__hp = max(0, novo_hp)  # Garante que o HP nunca seja negativo
+
     def pokedex_informacoes(self):
-        informacoes = f"{self.__apelido} é um pokemon {self.__especie} do tipo {self.__tipagem} introduzido na {self.__geracao}, tem a altura de {self.__altura} e pesa {self.__peso}"
+        informacoes = f"{self.__apelido} é um Pokémon {self.__especie} do tipo {self.__tipagem} introduzido na {self.__geracao}, tem a altura de {self.__altura} e pesa {self.__peso}."
         print(informacoes)
 
-#<---------------------------------------------------------------------------------------->
-#sistema de ataque
-def atacar(self, outro_pokemon):
-        dano = self.ataque - outro_pokemon.defesa
+    def atacar(self, outro_pokemon):
+        dano = self.__ataque - outro_pokemon.defesa
         if dano <= 0:
-            dano = 1  # garante que pelo menos 1 de dano seja causado
-        #Vai diminuir depedendo da defesa
+            dano = 1  # Garante que pelo menos 1 de dano seja causado
         outro_pokemon.hp -= dano
-        print(f"{self.apelido} attacked {outro_pokemon.apelido} and caused {dano} of damage!") #texto de quantidade de dano
+        print(f"{self.__apelido} atacou {outro_pokemon.apelido} e causou {dano} de dano!")
         if outro_pokemon.hp <= 0:
-            outro_pokemon.hp = 0
-            print(f"{outro_pokemon.apelido} fainted!")
+            print(f"{outro_pokemon.apelido} desmaiou!")
 
-#certificar que o pokemon está com HP sobrando
-def esta_vivo(self):
-    return self.hp > 0
-#<---------------------------------------------------------------------------------------->
+    def esta_vivo(self):
+        return self.__hp > 0
 
-#<---------------------------------------------------------------------------------------->
-oshawott = pokemon(apelido="Oshawott", altura="0.5m", peso="5.9kg", especie="Lontra-do-Mar", tipagem="Água", geracao="Geração V", hp=55, ataque=55, defesa=45)
-snivy = pokemon(apelido="Snivy", altura="0.6m", peso="8.1kg", especie="Serpente", tipagem="Planta", geracao="Geração V", hp=45, ataque=45, defesa=55)
-tepig = pokemon(apelido="Tepig", altura="0.5m", peso="9.9kg", especie="Leitão", tipagem="Fogo", geracao="Geração V", hp=65, ataque=63, defesa=45)
+# Instâncias dos pokémons
+oshawott = Pokemon("Oshawott", "0.5m", "5.9kg", "Lontra-do-Mar", "Água", "Geração V", 55, 55, 45)
+snivy = Pokemon("Snivy", "0.6m", "8.1kg", "Serpente", "Planta", "Geração V", 45, 45, 55)
+tepig = Pokemon("Tepig", "0.5m", "9.9kg", "Leitão", "Fogo", "Geração V", 65, 63, 45)
 
-#lista para a escolha dos pokemons
 pokemons = {
     "1": oshawott,
     "2": snivy,
     "3": tepig
 }
 
+# Mostra informações dos pokémons
 oshawott.pokedex_informacoes()
 snivy.pokedex_informacoes()
 tepig.pokedex_informacoes()
-#<---------------------------------------------------------------------------------------->
 
-#<---------------------------------------------------------------------------------------->
-#Sistema de batalha
+# Função de batalha
 def batalha(pokemon1, pokemon2):
-    print(f"\nGo! {pokemon1.apelido} and {pokemon2.apelido}!")
-    turnos = 1
+    print(f"\nGo! {pokemon1.apelido} vs {pokemon2.apelido}!")
+    turno = 1
     while pokemon1.esta_vivo() and pokemon2.esta_vivo():
-        print(f"\nTurn {turnos}")
-        # pokemon1 ataca pokemon2
+        print(f"\nTurno {turno}")
         pokemon1.atacar(pokemon2)
         if not pokemon2.esta_vivo():
             print(f"{pokemon1.apelido} venceu a batalha!")
             break
-        # pokemon2 ataca pokemon1
         pokemon2.atacar(pokemon1)
         if not pokemon1.esta_vivo():
             print(f"{pokemon2.apelido} venceu a batalha!")
             break
         print(f"HP {pokemon1.apelido}: {pokemon1.hp} | HP {pokemon2.apelido}: {pokemon2.hp}")
-        turnos += 1
+        turno += 1
 
-
+# Escolha de pokémon pelo jogador
 def escolher_pokemon(jogador_num):
     print(f"\nJogador {jogador_num}, escolha seu Pokémon:")
     for chave, pokemon in pokemons.items():
@@ -79,11 +91,12 @@ def escolher_pokemon(jogador_num):
     while escolha not in pokemons:
         escolha = input("Digite o número do Pokémon escolhido: ")
         if escolha not in pokemons:
-            print("Escolha inválida. Tente novamente.")
-    # Para cada batalha, cria uma cópia nova para não perder HP original
+            print("Pokémon inválido. Tente novamente.")
+    # Criar nova instância com os mesmos atributos
     p = pokemons[escolha]
-    return Pokemon(p.apelido, p.altura, p.peso, p.especie, p.tipagem, p.geracao, p.hp, p.ataque, p.defesa)
+    return Pokemon(p.apelido, p._Pokemon__altura, p._Pokemon__peso, p._Pokemon__especie, p._Pokemon__tipagem, p._Pokemon__geracao, p.hp, p.ataque, p.defesa)
 
+# Função principal
 def main():
     pokemon_jogador1 = escolher_pokemon(1)
     pokemon_jogador2 = escolher_pokemon(2)
